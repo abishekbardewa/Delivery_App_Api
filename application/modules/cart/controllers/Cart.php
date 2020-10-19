@@ -107,7 +107,7 @@ class Cart extends MX_Controller
 		$this->session->mark_as_flash('msg');
 		redirect("cart#cartForm");
 	}
-
+	//Delete Item In Cart
 	public function delete()
 	{
 		$id = $_GET['id'];
@@ -129,7 +129,7 @@ class Cart extends MX_Controller
 			echo "Invalid Request";
 		}
 	}
-
+	//Delete All From Cart
 	public function deleteCart()
 	{
 		if ($this->session->session_id) {
