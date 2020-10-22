@@ -71,8 +71,10 @@
     }
     function shipping_address()
     {
+
         $_POST = json_decode(file_get_contents('php://input'), true);
-        // print_r($_POST);die();
+        // print_r($_POST);
+        // die();
         if ($this->input->get('addr_id')) {
             $wh['user_id'] = $this->session->userdata('user_id');
             $wh['addr_id'] = $_GET['addr_id'];
