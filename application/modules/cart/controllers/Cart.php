@@ -274,7 +274,9 @@ class Cart extends MX_Controller
 	{
 		$data['shipqry'] = $this->db->select('users_address.name,lname,pin,zone_id,zone_master.name as zname,address,city,addr_id')->where('user_id', $_SESSION['user_id'])->join('zone_master', 'zone_id')->get('users_address');
 		if (@$_POST) {
-			// 	        echo "<pre>";print_r($_POST);die();
+			// echo "<pre>";
+			// print_r($_POST);
+			// die();
 			$i = 0;
 			foreach ($data['shipqry']->result() as $s) {
 				if (@$_POST['addr'][0] == $s->addr_id) {
@@ -282,21 +284,29 @@ class Cart extends MX_Controller
 					$_SESSION['addr_id'] = $_POST['addr'][0];
 					$_SESSION['zone_id'] = $s->zone_id;
 
-					$this->view_shipping_cost($s->zone_id, $s->pin, 'php');
-					redirect('cart/payment');
+					$shipCost = $this->view_shipping_cost($s->zone_id, $s->pin, 'php');
+					// redirect('cart/payment');
+					echo "<pre>";
+					print_r($shipCost);
+					die();
+					echo "1";
 				}
-				$i++;
+
+				// $i++;
 				if ($data['shipqry']->num_rows() == $i) {
-					$_SESSION['msg'] = "Please select a Shipping Address";
-					$this->session->mark_as_flash('msg');
-					redirect('cart/shipping');
+					// $_SESSION['msg'] = "Please select a Shipping Address";
+					// $this->session->mark_as_flash('msg');
+					// redirect('cart/shipping');
+					// echo "0";
 				}
 			}
+		} else {
+			echo "0";
 		}
-		$data['title'] = "Shipping Checkout Cart";
-		$data['module'] = 'cart';
-		$data['view_file'] = 'checkout/shipping';
-		echo Modules::run('template/layout2', $data);
+		// $data['title'] = "Shipping Checkout Cart";
+		// $data['module'] = 'cart';
+		// $data['view_file'] = 'checkout/shipping';
+		// echo Modules::run('template/layout2', $data);
 	}
 	function view_shipping_cost($zone, $pincode = '', $res = 'txt')
 	{
