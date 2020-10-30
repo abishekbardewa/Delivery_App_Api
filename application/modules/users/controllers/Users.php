@@ -163,9 +163,6 @@
     }
     function profile()
     {
-        // $_FILES = json_decode(file_get_contents('php://input'), true);
-        // // print_r($_FILES);
-        // // die();
         if (!$this->input->post()) {
             $pp = $this->db->where('user_id', $this->session->userdata('user_id'))->get('users')->result();
             $r = json_decode(json_encode($pp[0]), true); //converting the stdClass Objects to array

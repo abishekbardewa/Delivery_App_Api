@@ -272,7 +272,9 @@ class Cart extends MX_Controller
 	}
 	function shipping()
 	{
+
 		$data['shipqry'] = $this->db->select('users_address.name,lname,pin,zone_id,zone_master.name as zname,address,city,addr_id')->where('user_id', $_SESSION['user_id'])->join('zone_master', 'zone_id')->get('users_address');
+
 		if (@$_POST) {
 			// echo "<pre>";
 			// print_r($_POST);
@@ -285,29 +287,25 @@ class Cart extends MX_Controller
 					$_SESSION['zone_id'] = $s->zone_id;
 
 					$shipCost = $this->view_shipping_cost($s->zone_id, $s->pin, 'php');
-					// redirect('cart/payment');
-					echo "<pre>";
-					print_r($shipCost);
+					// $return = array("err" => "0", 'shipCost' => $shipCost,  'msg' => "Success");
+					// $this->output->set_content_type('application/json')->set_output(json_encode($return));
+					echo $shipCost;
 					die();
-					echo "1";
 				}
 
-				// $i++;
+				$i++;
 				if ($data['shipqry']->num_rows() == $i) {
-					// $_SESSION['msg'] = "Please select a Shipping Address";
-					// $this->session->mark_as_flash('msg');
-					// redirect('cart/shipping');
-					// echo "0";
+					$return = array("err" => "1", 'msg' => "Please select a Valid Shipping Address");
+					$this->output->set_content_type('application/json')->set_output(json_encode($return));
+					die();
 				}
 			}
-		} else {
-			echo "0";
 		}
-		// $data['title'] = "Shipping Checkout Cart";
-		// $data['module'] = 'cart';
-		// $data['view_file'] = 'checkout/shipping';
-		// echo Modules::run('template/layout2', $data);
+		$return = array('err' => "1", 'msg' => "Please select a shipping address");
+		$this->output->set_content_type('application/json')->set_output(json_encode($return));
 	}
+
+
 	function view_shipping_cost($zone, $pincode = '', $res = 'txt')
 	{
 		if ($pincode) {
